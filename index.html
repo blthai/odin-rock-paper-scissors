@@ -14,8 +14,8 @@
           return choices[Math.floor(Math.random() * 3)];
         }
         
-        function formatChoice(playerChoice){
-          return playerChoice.substr(0,1).toUpperCase() + playerChoice.substr(1).toLowerCase()
+        function formatSelection(playerSelection){
+          return playerSelection.substr(0,1).toUpperCase() + playerSelection.substr(1).toLowerCase()
         }
 
         function playRound(playerSelection, computerSelection){
@@ -32,6 +32,8 @@
             return `You lose! ${computerSelection} beats ${formatChoice(playerSelection)}`
           }
         }
+
+        
 
         
     </script>
