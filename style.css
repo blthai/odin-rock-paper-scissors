@@ -1,10 +1,14 @@
 body {
   display: flex;
   column-gap: 24px;
-  justify-content: flex-end;
   align-items: center;
   flex-direction: column;
   background-color: rgb(78, 77, 77);
+}
+
+html, body{
+  height: 100%;
+  margin:0;
 }
 
 h1{
