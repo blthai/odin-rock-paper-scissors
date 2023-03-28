@@ -3,12 +3,64 @@
   <head>
   <meta charset='utf-8'>
   <title>Rock paper scissors game</title>
-
-
+  <link rel='stylesheet' href='style.css'>
   </head>
-
   <body>
+    <h1>Rock Paper Scissors!</h1>
+    <button class='rock'>Rock</button>
+    <button class='paper'>Paper</button>
+    <button class='scissors'>Scissors</button>
+    <img src='images/rock.jpg'>
+    <img src='images/paper.png'>
+    <img src='images/scissors.jpg'>
+    
     <script>
+
+        const choices=document.querySelectorAll('button');
+
+        let playerScore=document.createElement('div');
+        playerScore.textContent=0;
+
+        let computerScore=document.createElement('div');
+        computerScore.textContent=0;
+
+        let currentRound=document.createElement('div');
+        currentRound.textContent=1;
+
+        let gameResult=document.createElement('div');
+        gameResult.classList.add('gameResult');
+
+        const round=document.createElement('div');
+        round.textContent='ROUND 1';
+        round.classList.add('round');
+
+        let roundResult=document.createElement('div');
+        roundResult.classList.add('roundResult');
+        document.body.appendChild(round);
+        
+        const buttons=document.createElement('div');
+        buttons.classList.add('buttons');
+        choices.forEach((choice)=>{buttons.appendChild(choice)})
+
+        const images=document.createElement('div');
+        const imgs=document.querySelectorAll('img');
+        images.classList.add('images')
+        imgs.forEach((image)=>images.appendChild(image))
+
+        const buttonsAndImages=document.createElement('div');
+        buttonsAndImages.appendChild(buttons);
+        buttonsAndImages.appendChild(images);
+        buttonsAndImages.classList.add('buttonsAndImages');
+        document.body.appendChild(buttonsAndImages);
+
+        const refresh=document.createElement('button');
+        refresh.textContent='Play Again?';
+        refresh.addEventListener('click',refreshGame);
+
+        function refreshGame(){
+            location.reload();
+        }
+
         function getComputerChoice(){
           let choices=['Rock','Paper','Scissors'];
           return choices[Math.floor(Math.random() * 3)];
@@ -26,41 +78,65 @@
                   playerSelection.toUpperCase()==='PAPER' && computerSelection==='Rock' ||
                   playerSelection.toUpperCase()==='SCISSORS' && computerSelection==='Paper')
           {
-            return `You win this round! ${formatSelection(playerSelection)} beats ${computerSelection}.`
+            return `You win Round ${currentRound.textContent}! ${formatSelection(playerSelection)} beats ${computerSelection}.`
           }
           else {
-            return `You lose this round! ${computerSelection} beats ${formatSelection(playerSelection)}.`
+            return `You lose Round ${currentRound.textContent}! ${computerSelection} beats ${formatSelection(playerSelection)}.`
           }
         }
 
-        function game(){
-          let playerScore=0;
-          let computerScore=0;
-          let currentRound=0;
-          let playerSelection;
-          let roundResult;
-          while(currentRound<5){
-            playerSelection=prompt('Choose one: rock, paper, or scissors');
-            roundResult=playRound(playerSelection, getComputerChoice());
-            if(roundResult.search('win')!==-1){
-              playerScore++;
-              currentRound++;
-            }
-            else if(roundResult.search('lose')!==-1){
-              computerScore++;
-              currentRound++;
-            }
-            console.log(roundResult + ` Player Score: ${playerScore} Computer Score: ${computerScore}`);
+        function determineRoundWinner(result){
+          if(result.search('win')!==-1){
+                playerScore.textContent++;
+                currentRound.textContent++;
+              }
+          else if(result.search('lose')!==-1){
+            computerScore.textContent++;
+            currentRound.textContent++;
           }
-          if(playerScore>computerScore){
-            console.log('Congratulations! You Win!')
+          
+        }
+
+        function determineRoundMessage(){
+          if(currentRound.textContent>1 && currentRound.textContent<6){
+            round.textContent='ROUND ' + (currentRound.textContent);
+          }
+          else if(currentRound.textContent>=6){
+            round.textContent='GAME OVER!'
+          }
+        }
+
+        function determineGameWinner(){
+          if(playerScore.textContent>computerScore.textContent){
+            gameResult.textContent='You win this game!';
           }
           else{
-            console.log('Sorry! You Lost.')
+            gameResult.textContent='You lose this game!';
           }
         }
+    
+        function playGame(event) {
+          if(currentRound.textContent<=5){
+              roundResult.textContent = playRound(event.target.textContent, getComputerChoice());
+              determineRoundWinner(roundResult.textContent);
+              determineRoundMessage();
+              roundResult.textContent=roundResult.textContent+` Player Score: ${playerScore.textContent} Computer Score: ${computerScore.textContent}`
+              document.body.appendChild(roundResult);
+            }       
+          if(currentRound.textContent>5){
+            choices.forEach((choice) => {choice.removeEventListener('click', playGame)});
+            determineGameWinner();
+            document.body.appendChild(gameResult);
+            document.body.appendChild(refresh);
+            }
+          }
 
-        game();
+        choices.forEach((choice) => {
+          choice.addEventListener('click', playGame);
+        })
     </script>
   </body>
 </html>
+
+
+
