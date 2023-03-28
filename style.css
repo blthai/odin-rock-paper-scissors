@@ -3,12 +3,14 @@ body {
   column-gap: 24px;
   align-items: center;
   flex-direction: column;
-  background-color: rgb(78, 77, 77);
+  
 }
+
 
 html, body{
   height: 100%;
   margin:0;
+  background-color: rgb(78, 77, 77);
 }
 
 h1{
